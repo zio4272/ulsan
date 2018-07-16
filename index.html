@@ -1,0 +1,281 @@
+
+<!doctype html>
+<html>
+	<head>
+		<title>2018 위해우려제품 모니터링</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="author" content="2018 위해우려제품 모니터링">
+		<meta name="description" content="울산녹색소비자연대 2018 위해우려제품 모니터링">
+		<meta name="keywords" content="울산 녹색 소비자연대 2018 위해우려제품 모니터링">
+		<link rel="stylesheet" href="/css/default.css">	 
+		<script src="/lib/jquery-1.7.2.min.js" ></script> 
+		<script src="/js/function.js" ></script> 
+	</head>
+	<body>
+	<div class="wrapper"><div class="top_title">2018 위해우려제품 모니터링</div>
+<div class="top_menu_box">
+	<div class="top_menu">
+					<ul class="type_01"> 
+				<!-- <li ><a href="javascript:;" onclick="moveUrl('/desc/desc1.php');">부당한 환경성표시광고란? </li>
+				<li ><a href="javascript:;" onclick="moveUrl('/desc/desc2.php');">용어설명</li>
+				<li ><a href="javascript:;" onclick="moveUrl('/desc/desc3.php');">부당한 환경성 표시광고 판단방법</li>
+				<li ><a href="javascript:;" onclick="moveUrl('/desc/desc4.php');">마크 예시</li> -->
+				<li class="on"><a href="javascript:;" onclick="moveUrl('#');">조사결과</a></li>
+			</ul>
+			 
+		<form name="logoutFrm" action="#" target="ifrm" style="display:none;" method="POST">
+			<input type="hidden" name="mode" value="logout">		
+		</form>
+		<div class="logout_btn" onclick="logout();">로그아웃</div>
+		<div style="clear:both;"></div>
+	</div>
+</div> 
+<script src="/lib/paging.js" charset="utf-8"></script>
+<script>
+var pg = '1';
+var rowCnt = 10;
+var productUse = '';
+var productType = '';
+var searchType = '';
+var searchText = '';
+var online = '';
+
+$(document).ready(function(){
+
+});
+
+// 리셋
+function reset()
+{
+	// ie 안됨
+	//document.getElementById("searchFrm").reset();
+
+	$("select[name=productUse] option:selected").val('');
+	$("select[name=productType] option:selected").val('');
+	$("select[name=searchType] option:selected").val('');
+	$("input[name=searchText]").val('');
+
+	//search();
+
+	location.href="#";
+}
+
+// 전체선택/해제
+function allCheck()
+{
+	if( $("input[name=allChk]").is(":checked") )
+	{
+		$("input[name=chk]").attr("checked", true);
+	}
+	else
+	{
+		$("input[name=chk]").attr("checked", false);
+	}
+}
+
+// 조사내역 삭제
+function del()
+{
+	var chkLen = $("input[name=chk]:checked").length;
+
+	if( chkLen<1 )
+	{
+		alert("삭제할 내역을 선택하세요.");
+		return false;
+	}
+
+	if( confirm("삭제하시겠습니까?") )
+	{
+		$.each($("input[name=chk]:checked"), function(idx, val){
+			$.ajax({
+				url : "#"
+				,type : "POST"
+				,data : {
+					seq : $(this).val()
+				}
+				,cache : false
+				,async : false
+				,dataType : "JSON"
+				,success : function(data){
+				}
+				,error : function(e){
+					//e.responseText
+				}
+			});
+		});
+
+		location.reload();
+	}
+}
+
+// 엑셀다운
+function excel(){
+	var frm = document.frm;
+	//frm.target="";
+	frm.action = "#";
+	frm.submit();
+	frm.action = "";
+}
+
+// 상세보기
+function goView(idx){
+	var frm = document.frm;
+
+	frm.nowpage.value="1";
+	frm.seq.value = idx;
+	frm.action = "#";
+	frm.submit();
+}
+
+</script>
+<div class="content_box">
+	<div class="left"> 
+	<div class="type_01"> 
+		        <div class="leftTitle">조사내역2018</div>		
+			<ul>
+				<li class="on" ><a href="#" >조사내역(전체)</a></li>	
+				<!--
+				<li  ><a href="/list/n_list.php?search_month=8" >조사내역(8월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=9" >조사내역(9월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=10" >조사내역(10월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=11" >조사내역(11월)</a></li>	
+			 -->
+			</ul>		
+			
+			<br/><br/><br/>
+			
+			<div class="leftTitle">조사내역2017</div>		
+			<ul>
+				<li class="on" ><a href="#" >조사내역(전체)</a></li>	
+				<li  ><a href="#" >조사내역(8월)</a></li>	
+				<li  ><a href="#" >조사내역(9월)</a></li>	
+				<li  ><a href="#" >조사내역(10월)</a></li>	
+				<li  ><a href="#" >조사내역(11월)</a></li>	
+			 
+			</ul>		
+
+			</div>  
+
+
+
+
+</div>
+	<div class="content">
+		<div class="searchBox">
+			<form id="frm" name="frm" id="searchFrm" action="">
+				<input type="hidden" name="nowpage">
+				<input type="hidden" name="seq">
+				<input type="hidden" name="comment">
+				<input type="hidden" name="search_month" value="">
+
+
+				<select class="select02" name="productType" id="search_cate_1" >
+					<option value="">- 제품군 -</option>
+											<option value="1" >세정제</option>
+											<option value="2" >합성세제</option>
+											<option value="3" >표백제</option>
+											<option value="4" >섬유유연제</option>
+											<option value="5" >자동차용워셔액</option>
+											<option value="6" >코팅제</option>
+											<option value="7" >방청제</option>
+											<option value="8" >김서림 방지제</option>
+											<option value="9" >접착제</option>
+											<option value="10" >다림질 보조제</option>
+											<option value="11" >틈새충진제</option>
+											<option value="12" >방향제</option>
+											<option value="13" >탈취제</option>
+											<option value="14" >물체탈염색제</option>
+											<option value="15" >문신용염료</option>
+											<option value="16" >인쇄용 잉크·토너</option>
+											<option value="17" >소독제</option>
+											<option value="18" >방충제</option>
+											<option value="19" >방부제</option>
+											<option value="20" >살조제</option>
+											<option value="21" >양초</option>
+											<option value="22" >습기제거제</option>
+											<option value="23" >부동액</option>
+									</select>
+
+				<select name="company">
+					<option value="">- 소속 -</option>
+											<option value="1" >녹소연</option>
+											<option value="2" >굿모니터링</option>
+									</select>
+
+				<select name="fieldName">
+					<option value="a.productName"  >제품명</option>
+					<option value="b.name" >조사자</option>
+				</select>
+
+				<input type="text" name="keyword" style="height:20px;width:110px;" value="" >
+				<input type="submit" class="btn3" value="검색" onclick="" >
+				<input type="button" class="btn3" value="리셋" onclick="document.frm.reset();" >
+			</form>
+		</div>
+		<div class="list">
+			<table>
+				<thead>
+					<th width="20"><input type="checkbox" name="allChk" onclick="allCheck();"></th>
+					<th width="50">번호</th>
+					<th width="90">제품군</th>
+					<th>모델명</th>
+					<th width="90">소속</th>
+					<th width="90">조사자</th>
+					<th width="90">조사일시</th>
+				</thead>
+				<tbody>
+										<tr>
+						<td class="td1"><input type="checkbox" name="chk" value="4377"></td>
+						<td class="td1">4377</td>
+						<td class="td2"><a href="#none" onclick="goView('4377')">방향제</a></td>
+						<td class="td3"><a href="#none" onclick="goView('4377')">슈퍼아이스겔</a></td>
+						<td class="td3">녹소연</td>
+						<td class="td5">조사자2</td>
+						<td class="td3">2018-06-21</td>
+					</tr>
+										<tr>
+						<td class="td1"><input type="checkbox" name="chk" value="4376"></td>
+						<td class="td1">4376</td>
+						<td class="td2"><a href="#none" onclick="goView('4376')">방향제</a></td>
+						<td class="td3"><a href="#none" onclick="goView('4376')">슈퍼아이스겔</a></td>
+						<td class="td3">녹소연</td>
+						<td class="td5">조사자2</td>
+						<td class="td3">2018-06-21</td>
+					</tr>
+									</tbody>
+			</table>
+		</div>
+
+		<div style="margin:0 auto;text-align:center;width:760px;border:1px solid gray;"></div>
+
+		<div>
+			<p class="btn_page mt30 c" >
+				<a class="num on" href="#none">1</a><style>
+	.paging_td {
+		cursor:pointer;
+		text-align:center;
+		padding-top:5px;
+		color:#9D9D9D;
+	}
+
+	.paging_over {
+		background-color:#EFEEE7;
+		color:#8080FF;
+	}
+	</style>			</p>
+		</div>
+
+		<div class="writeBtnBox" id="writeBtnBox01" style="width:100%;margin:30px 0px;" >
+						<span class="btn_black" style="right:140px;cursor:pointer;"><a href="#" style="color:white;">조사내역 등록</a></span>
+			<span class="btn_black" onclick="del();" style="right:0px;cursor:pointer;">조사내역 삭제</span>
+			
+					</div>
+	</div>
+
+	<div class="clear"></div>
+</div>
+	</div>
+	<iframe name="ifrm" id="ifrm" style="border:0px;visibility:hidden;width:0px;height:0px;"></iframe> 
+	<div style="height:50px;"></div>
+</body>
+</html>
