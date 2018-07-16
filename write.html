@@ -1,0 +1,1329 @@
+
+<!doctype html>
+<html>
+	<head>
+		<title>2018 위해우려제품 모니터링</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="author" content="2018 위해우려제품 모니터링">
+		<meta name="description" content="울산녹색소비자연대 2018 위해우려제품 모니터링">
+		<meta name="keywords" content="울산 녹색 소비자연대 2018 위해우려제품 모니터링">
+		<link rel="stylesheet" href="/css/default.css">	 
+		<script src="/lib/jquery-1.7.2.min.js" ></script> 
+		<script src="/js/function.js" ></script> 
+	</head>
+	<body>
+	<div class="wrapper"><div class="top_title">2018 위해우려제품 모니터링</div>
+<div class="top_menu_box">
+	<div class="top_menu">
+					<ul class="type_01"> 
+				<!-- <li ><a href="javascript:;" onclick="moveUrl('/desc/desc1.php');">부당한 환경성표시광고란? </li>
+				<li ><a href="javascript:;" onclick="moveUrl('/desc/desc2.php');">용어설명</li>
+				<li ><a href="javascript:;" onclick="moveUrl('/desc/desc3.php');">부당한 환경성 표시광고 판단방법</li>
+				<li ><a href="javascript:;" onclick="moveUrl('/desc/desc4.php');">마크 예시</li> -->
+				<li class="on"><a href="javascript:;" onclick="moveUrl('/index.html');">조사결과</a></li>
+			</ul>
+			 
+		<form name="logoutFrm" action="/member/loginp.php" target="ifrm" style="display:none;" method="POST">
+			<input type="hidden" name="mode" value="logout">		
+		</form>
+		<div class="logout_btn" onclick="logout();">로그아웃</div>
+		<div style="clear:both;"></div>
+	</div>
+</div> 
+<!-- 캘린더, 주소, 에디터 -->
+<link rel="stylesheet" href="/css/jquery-ui.css">
+<link rel="stylesheet" href="/css/jquery-ui.theme.min.css">
+<script src="/lib/jquery-ui.min.js" ></script>
+<script src="/lib/jquery.ui.datepicker-ko.js" ></script>
+<!-- <script src="/lib/smart/js/HuskyEZCreator.js" charset="utf-8"></script>  -->
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
+<script>
+$(document).ready(function(){
+	// 조사일자
+	$("input[name=searchDate]").datepicker();
+	// 생산(제조)년월
+	$("input[name=productDate]").datepicker();
+	// 구매일
+	$("input[name=incDate]").datepicker();
+
+	
+	// 부적합
+	legalChk();
+	legalChk2();
+
+	fileAdd('1');
+});
+
+
+// 제품구분 변경
+function productTypeChn(elem)
+{
+	/*
+	$(".productConn").hide();
+	$(".productChild").hide();
+	$(".productUsage").hide();
+
+	var productType = $(elem).val();
+	if(productType=="1" || productType=="2" || productType=="4")
+	{
+		$(".productConn").show();
+	}
+	if(productType=="1" || productType=="5" || productType=="6" || productType=="7")
+	{
+		$(".productChild").show();
+	}
+
+	if(productType=="2" || productType=="3" || productType=="4" )
+	{
+		$(".productUsage").show();
+	}
+	*/
+}
+
+// 성분
+function ingredientCall(elem)
+{
+	if($(elem).val()=="999")
+	{
+		if($(elem).prop("checked"))
+		{
+			$("input[name='ingredient[]']").prop("checked", false);
+			$(elem).prop("checked", true);
+			$("input[name=ingredient_ca]").prop("disabled", false).focus();
+		}
+		else
+		{
+			$(elem).prop("checked", false);
+			$("input[name=ingredient_ca]").prop("disabled", true);//.val("");
+		}
+	}
+	else
+	{
+		$("input[name=ingredient_ca]").prop("disabled", true);//.val("");
+		$("input[name='ingredient[]'][value=999]").prop("checked", false);
+	}
+}
+
+// 중량/용량
+function capacityCall(elem)
+{
+	$("select[name=capacity1]").prop("disabled", false);
+	$("select[name=capacity2]").prop("disabled", false);
+
+	if($(elem).is(":checked"))
+	{
+		$("input[name=capacity_ca]").prop("disabled", false).focus();
+		$("select[name=capacity1]").prop("disabled", true).find("option").eq(0).attr("selected", "selected");
+		$("select[name=capacity2]").prop("disabled", true).find("option").eq(0).attr("selected", "selected");
+	}
+	else
+	{
+		$("input[name=capacity_ca]").prop("disabled", true);
+		$("input[name=capacity_ca]");//.val("");
+	}
+}
+
+// 액성
+function liquidCall(elem)
+{
+	$("select[name=liquid]").prop("disabled", false);
+
+	if($(elem).is(":checked"))
+	{
+		$("input[name=liquid_ca]").prop("disabled", false).focus();
+		$("select[name=liquid]").prop("disabled", true).find("option").eq(0).attr("selected", "selected");
+	}
+	else
+	{
+		$("input[name=liquid_ca]").prop("disabled", true);//.val("");
+	}
+}
+
+// 표준권장사용량
+function usageCall(elem)
+{
+	$("input[name=usage_ca]").attr("disabled", false);
+
+	if($(elem).val()=="999")
+	{
+		$(elem).prop("checked", true);
+		$("input[name=usage_ca]").focus();
+	}
+	else
+	{
+		$("input[name=usage_ca]").prop("disabled", true);//.val("");
+	}
+}
+
+// 사용상주의사항
+function notandumCall(elem)
+{
+	$("input[name=notandum_ca]").attr("disabled", false);
+
+	if($(elem).val()=="999")
+	{
+		$(elem).prop("checked", true);
+		$("input[name=notandum_ca]").focus();
+	}
+	else
+	{
+		$("input[name=notandum_ca]").prop("disabled", true);//.val("");
+	}
+}
+
+// 조사제품 자가검사 번호
+function serial1Call(elem)
+{
+	$("input[name=serial1]").prop("disabled", false);
+	$("input[name=serial1_ca]").prop("disabled", false);
+
+	if($(elem).is(":checked"))
+	{
+		$("input[name=serial1]").prop("disabled", true);//.val("");
+		$("input[name=serial1_ca]").focus();
+	}
+	else
+	{
+		$("input[name=serial1_ca]").prop("disabled", true);//.val("");
+	}
+}
+
+// 부적합
+function legalChk()
+{
+	$("input[name='legal_ca']").prop("disabled", false);
+
+	if($("input[name=legal]:checked").val()=="1"||$("input[name=legal]:checked").val()=="3")
+	{
+		$("input[name='legal_ca']").prop("disabled", true).prop("checked", false);
+	}
+}
+
+
+// 부적합 2번
+function legalChk2()
+{
+	$("input[name='legal_ca_2[]']").prop("disabled", false);
+
+	if($("input[name=legal_ca]:checked").val()!="2")
+	{
+		$("input[name='legal_ca_2[]']").prop("disabled", true).prop("checked", false);
+	}
+
+
+	$("input[name='legal_ca_3']").prop("disabled", false);
+
+	if($("input[name=legal_ca]:checked").val()!="3")
+	{
+		$("input[name='legal_ca_3']").prop("disabled", true).prop("checked", false);
+	}
+}
+
+
+// 어린이 보호 포장
+function childCall(elem)
+{
+	$("input[name=child_ca]").attr("disabled", false);
+
+	if($(elem).val()=="999")
+	{
+		$(elem).prop("checked", true);
+		$("input[name=child_ca]").focus();
+	}
+	else
+	{
+		$("input[name=child_ca]").prop("disabled", true);//.val("");
+	}
+}
+
+
+
+// 응급처치사항
+function onlineEgCall(elem)
+{
+	$("input[name=onlineEg_ca]").attr("disabled", false);
+
+	if($(elem).val()=="999")
+	{
+		$(elem).prop("checked", true);
+		$("input[name=onlineEg_ca]").focus();
+	}
+	else
+	{
+		$("input[name=onlineEg_ca]").prop("disabled", true);//.val("");
+	}
+}
+
+// 살균항균소독 문구
+function onlineStCall(elem)
+{
+	if($(elem).val()=="999")
+	{
+		if($(elem).prop("checked"))
+		{
+			$("input[name='onlineSt[]']").prop("checked", false);
+			$(elem).prop("checked", true);
+			$("input[name=onlineSt_ca]").prop("disabled", false).focus();
+		}
+		else
+		{
+			$(elem).prop("checked", false);
+			$("input[name=onlineSt_ca]").prop("disabled", true);//.val("");
+		}
+	}
+	else
+	{
+		$("input[name=onlineSt_ca]").prop("disabled", true);//.val("");
+		$("input[name='onlineSt[]'][value=999]").prop("checked", false);
+	}
+}
+
+// 친환경, 무균 문구
+function onlineEcoCall(elem)
+{
+	if($(elem).val()=="999")
+	{
+		if($(elem).prop("checked"))
+		{
+			$("input[name='onlineEco[]']").prop("checked", false);
+			$(elem).prop("checked", true);
+			$("input[name=onlineEco_ca]").prop("disabled", false).focus();
+		}
+		else
+		{
+			$(elem).prop("checked", false);
+			$("input[name=onlineEco_ca]").prop("disabled", true);//.val("");
+		}
+	}
+	else
+	{
+		$("input[name=onlineEco_ca]").prop("disabled", true);//.val("");
+		$("input[name='onlineEco[]'][value=999]").prop("checked", false);
+	}
+}
+
+// 바코드
+function onlineBarcodeCall(elem)
+{
+	$("input[name=onlineBarcode]").prop("disabled", false);
+	$("input[name=onlineBarcode_ca]").prop("disabled", false);
+
+	if($(elem).is(":checked"))
+	{
+		$("input[name=onlineBarcode]").prop("disabled", true);//.val("");
+		$("input[name=onlineBarcode_ca]").focus();
+	}
+	else
+	{
+		$("input[name=onlineBarcode]").focus();
+		$("input[name=onlineBarcode_ca]").prop("disabled", true);//.val("");
+	}
+}
+
+// 중량
+function capacityChn(elem)
+{
+	capacityCall(elem);
+	if($(elem).val()!="0")
+	{
+		$("input[name=capacity]").prop("checked", false);
+		$("input[name=capacity_ca]").prop("disabled", true);
+	}
+}
+
+// 액상
+function liquidChn(elem)
+{
+	liquidCall(elem);
+	if($(elem).val()!="0")
+	{
+		$("input[name=liquid_chk]").prop("checked", false);
+		$("input[name=liquid_ca]").prop("disabled", true);
+	}
+}
+
+function productDateCall(elem)
+{
+	$("input[name=productDate]").prop("disabled", false);
+	$("input[name=productDate_ca]").prop("disabled", false);
+
+	if($(elem).is(":checked"))
+	{
+		$("input[name=productDate]").prop("disabled", true);//.val("");
+		$("input[name=productDate_ca]").focus();
+	}
+	else
+	{
+		$("input[name=productDate]").focus();
+		$("input[name=productDate_ca]").prop("disabled", true);//.val("");
+	}
+}
+
+
+
+
+
+//도로명주소 변경
+function openDaumPostcode(zip, addr1, addr2) {
+    new daum.Postcode({
+        oncomplete: function(data) {
+			$("input[name="+zip+"]").val( data.zonecode );
+			$("input[name="+addr1+"]").val( data.address );
+			$("input[name="+addr2+"]").focus();
+        }
+    }).open();
+}
+// 조사내용등록
+function reg()
+{
+	// 에디터의 내용을 에디터 생성시에 사용했던 textarea에 넣어 줍니다.
+	//oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD", []);
+	var frm = document.writeFrm;
+
+	frm.target = "ifrm";
+	frm.action = "./n2_writep.php";
+	frm.submit();
+
+	// $("form[name=writeFrm]")
+	// 	.attr("action","./n2_writep.php")
+	// 	.submit();
+}
+
+//계속등록
+function con_reg()
+{
+ //alert(1);
+	var frm = document.writeFrm;
+
+	frm.con_flag.value = "T";
+
+	$("form[name=writeFrm]")
+		.attr("action","./n2_writep.php")
+		.submit();
+}
+
+
+
+
+
+
+
+function fileAdd(no)
+{
+	var vhtml  = "<p>";
+		vhtml += "	<input type='file' name='image"+no+"[]' style='margin-bottom:5px;height:26px;line-height:26px;' >";
+		vhtml += "	<span class='btn_black' onclick='fileDel(this);' style='height:26px;line-height:26px;cursor:pointer;'>삭제</span>";
+		vhtml += "</p>";
+
+	$(".fileBox"+no).append( vhtml );
+}
+function fileDel(elem)
+{
+	if( confirm("삭제하시겠습니까?") )
+	{
+		$(elem).parent().remove();
+	}
+}
+
+function fileDel2(seq, elem)
+{
+	if( confirm("삭제하시겠습니까?") )
+	{
+		$("input[name=delImg]").val($("input[name=delImg]").val()+"|"+seq);
+		$(elem).parent().remove();
+	}
+}
+
+
+
+function goList(){
+	var frm = document.frm;
+
+	frm.action = "n2_list.php";
+	frm.submit();
+}
+
+function goCon(){
+	var frm = document.writeFrm;
+
+	frm.target = "";
+	frm.method = "post";
+	frm.action = "n2_write.php";
+	frm.submit();
+}
+
+</script>
+
+<style>
+.block1{display:none;}
+.block1{display:none;}
+.block2{display:none;}
+.block3{display:none;}
+
+
+.field5_P01{display:none;}
+.field5_P02{display:none;}
+.field5_P03{display:none;}
+.field5_P04{display:none;}
+
+.field7_P01{display:none;}
+.field7_P02{display:none;}
+.field7_P03{display:none;}
+.field7_P04{display:none;}
+
+.select02{min-width:150px;width: 124px;}
+
+
+.writeFrmBox {border:0px;}
+.tb_1 {width:100%;table-layout:fixed;}
+.tb_1 tr td {border: 1px solid #bcbcbc;background:none;padding:5px 10px;}
+.tb_1 .td1 {width:160px;background:#ebebeb;}
+.tb_1 .td2, .tb_1 .td3, .tb_1 .td4, .tb_1 .td5, .tb_1 .td6, .tb_1 .td7 {background:white;width:auto;}
+.tb_1 .td2 span, .tb_1 .td3 span, .tb_1 .td4 span, .tb_1 .td5 span {display:inline-block;width:80px;}
+.tb_1 .td6 span {display:inline-block;width:120px;}
+.tb_1 .td6 {background:white;width:140px;}
+.tb_1 .td9 textarea {width:580px;height:70px;}
+
+.tb_2 {width:100%;margin-top:20px;}
+.tb_2 tr td {border: 1px solid #bcbcbc;background:none;padding:5px !important;}
+.tb_2 .td1 {width:55px;background:#ebebeb;}
+.tb_2 .td2 {width:65px;background:#ebebeb;color:black;}
+.tb_2 .td4 {text-align:left;}
+.tb_2 .td5 {width:100px !important;color:black;}
+.tb_2 .td6 {width:240px !important;}
+.tb_2 .td5 input, .tb_2 .td6 input {width:200px !important;}
+
+.tb_4 {width:100%;margin-top:20px;}
+.tb_4 tr td {border: 1px solid #bcbcbc;background:none;padding:5px !important;}
+.tb_4 .td1 {width:120px;background:#ebebeb;}
+.tb_4 .td2 {width:608px;background:none;}
+
+b3{font-size:1.2em;font-weight:bold;margin-top:30px;}
+</style>
+
+<div class="content_box">
+	<div class="left"> 
+	<div class="type_01"> 
+		        <div class="leftTitle">조사내역2018</div>		
+			<ul>
+				<li class="on" ><a href="/list/n2_list.php" >조사내역(전체)</a></li>	
+				<!--
+				<li  ><a href="/list/n_list.php?search_month=8" >조사내역(8월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=9" >조사내역(9월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=10" >조사내역(10월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=11" >조사내역(11월)</a></li>	
+			 -->
+			</ul>		
+			
+			<br/><br/><br/>
+			
+			<div class="leftTitle">조사내역2017</div>		
+			<ul>
+				<li class="on" ><a href="/list/n_list.php" >조사내역(전체)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=8" >조사내역(8월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=9" >조사내역(9월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=10" >조사내역(10월)</a></li>	
+				<li  ><a href="/list/n_list.php?search_month=11" >조사내역(11월)</a></li>	
+			 
+			</ul>		
+
+			</div>  
+
+
+
+
+</div>
+	<form name="frm" id="searchFrm" action="">
+		<input type="hidden" name="nowpage" value="">
+		<input type="hidden" name="seq" value="">
+		<input type="hidden" name="fieldName" value="">
+		<input type="hidden" name="keyword" value="">
+		<input type="hidden" name="search_cate_1" value="">
+		<input type="hidden" name="search_cate_2" value="">
+		<input type="hidden" name="search_month" value="">
+	</form>
+
+	<div class="content">
+		<div class="writeFrmBox">
+			<form name="writeFrm" method="POST" target="ifrm" enctype="multipart/form-data">
+			<input type="hidden" name="searchName" value="조사자2" >
+			<input type="hidden" name="seq" value="">
+
+			<input type="hidden" name="delImg" value="">
+			<input type="hidden" name="con_flag" value="">
+
+
+			<b3>모니터링 일반 현황</b3>
+			<table class="tb_1">
+				<tr>
+					<td class="td1">제품구분</td>
+					<td class="td2" colspan="3">
+						<select name="productType" onchange="productTypeChn(this);">
+													<option value="1" >세정제</option>
+													<option value="2" >합성세제</option>
+													<option value="3" >표백제</option>
+													<option value="4" >섬유유연제</option>
+													<option value="5" >자동차용워셔액</option>
+													<option value="6" >코팅제</option>
+													<option value="7" >방청제</option>
+													<option value="8" >김서림 방지제</option>
+													<option value="9" >접착제</option>
+													<option value="10" >다림질 보조제</option>
+													<option value="11" >틈새충진제</option>
+													<option value="12" >방향제</option>
+													<option value="13" >탈취제</option>
+													<option value="14" >물체탈염색제</option>
+													<option value="15" >문신용염료</option>
+													<option value="16" >인쇄용 잉크·토너</option>
+													<option value="17" >소독제</option>
+													<option value="18" >방충제</option>
+													<option value="19" >방부제</option>
+													<option value="20" >살조제</option>
+													<option value="21" >양초</option>
+													<option value="22" >습기제거제</option>
+													<option value="23" >부동액</option>
+												</select>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="td1">연도</td>
+					<td class="td2">2018
+						<input type="hidden" name="year" value="2018" >
+					</td>
+
+					<td class="td1">소속</td>
+					<td class="td2">
+						<select name="company">
+													<option value="1" >녹소연</option>
+													<option value="2" >굿모니터링</option>
+												</select>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="td1">조사원</td>
+					<td class="td2">조사자2</td>
+					<td class="td1">조사일자</td>
+					<td class="td2">
+						<input type="text" name="searchDate" readonly value="">
+					</td>
+				</tr>
+
+				<tr>
+					<td class="td1">매장유형</td>
+					<td class="td2">
+						<select name="shopType">
+													<option value="1" >백화점</option>
+													<option value="2" >대형마트</option>
+													<option value="3" >다이소</option>
+													<option value="4" >소형마트(지역내 중소형마트)</option>
+													<option value="5" >생활용품전문점(문구점,철물점,잡화점,화장품전문점 등)</option>
+													<option value="6" >전문점(자동차용품점, 방향제전문점 등)</option>
+													<option value="7" >드럭스토어(올리브영, 롭스 등)</option>
+													<option value="8" >편의점</option>
+													<option value="9" >전통시장</option>
+													<option value="10" >기타(프리마켓, 개인점포, 카페,공방 등)</option>
+													<option value="11" >홈쇼핑종합몰(Cjmall, Hmall 등)</option>
+													<option value="12" >오픈마켓쇼핑몰(11번가, G마켓 등)</option>
+													<option value="13" >개인쇼핑몰</option>
+													<option value="14" >소셜커머스(쿠팡,위메프,티몬)</option>
+													<option value="15" >SNS(페이스북, 인스타그램, 트위터 블로그 카페등)</option>
+												</select>
+					</td>
+					<td class="td1">매장명</td>
+					<td class="td2">
+						<input type="text" name="shopName" value="">
+					</td>
+				</tr>
+
+				<tr>
+					<td class="td1">매장주소(오프라인)</td>
+					<td class="td2" colspan="3">
+						<input type="text" name="shopAddr" value="">
+					</td>
+				</tr>
+
+
+
+<!--
+				<tr>
+					<td class="td1">지역명</td>
+					<td class="td2">
+						<select name="local">
+													<option value="1" >서울</option>
+													<option value="2" >부산</option>
+													<option value="3" >대구</option>
+													<option value="4" >인천</option>
+													<option value="5" >대전</option>
+													<option value="6" >광주</option>
+													<option value="7" >울산</option>
+													<option value="8" >세종</option>
+													<option value="9" >제주</option>
+													<option value="10" >경기</option>
+													<option value="11" >강원</option>
+													<option value="12" >충북</option>
+													<option value="13" >충남</option>
+													<option value="14" >전북</option>
+													<option value="15" >전남</option>
+													<option value="16" >경북</option>
+													<option value="17" >경남</option>
+												</select>
+					</td>
+					<td class="td1">관할청</td>
+					<td class="td2">
+						<select name="control">
+													<option value="1" >한강유역환경청</option>
+													<option value="2" >대구지방환경청</option>
+													<option value="3" >금강유역환경청</option>
+													<option value="4" >원주유역환경청</option>
+													<option value="5" >낙동강유역환경청</option>
+													<option value="6" >영산강유역환경청</option>
+													<option value="7" >새만금지방환경청</option>
+												</select>
+					</td>
+				</tr>
+				-->
+			</table>
+
+			<br/><br/>
+			<b3>표시사항항목</b3>
+			<!-- 표시사항 13개 항목 -->
+			<table class="tb_1" style="">
+				<tr>
+					<td class="td1">품목</td>
+					<td class="td2">
+						<input type="text" name="productName" value="">
+					</td>
+					<td class="td1">종류(용도)</td>
+					<td class="td2">
+						<input type="text" name="productUse" value="">
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">종류(제형)</td>
+					<td class="td2">
+						<input type="text" name="productShape" value="">
+					</td>
+					<td class="td1">제품향</td>
+					<td class="td2">
+						<input type="text" name="productPerfume" value="">
+					</td>
+					<!--
+					<td class="td1">제품색상</td>
+					<td class="td2">
+						<input type="text" name="productColor" value="">
+					</td>
+					-->
+				</tr>
+				<tr>
+					<td class="td1">모델명</td>
+					<td class="td2" colspan="3">
+						<input type="text" name="productModel" value="">
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">생산(제조)년월</td>
+					<td class="td2" >
+						<input type="text" name="productDate" value="" readonly style="width:168px;" >
+						<!--<p style="margin-top:5px;"><input type="checkbox" name="productDate_chk" value="999" onclick="productDateCall(this);" >&nbsp;사유<input type="text" name="productDate_ca" style="width:80%;margin-left:10px;"  value=""></p> -->
+					</td>
+					<td class="td2" colspan="2">
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">생산국구분</td>
+					<td class="td2" >
+						<input type="radio" name="productNationCk" value="국산" checked>&nbsp;국산&nbsp;&nbsp;
+						<input type="radio" name="productNationCk" value="수입" >&nbsp;수입
+					</td>
+					<td class="td1">생산국명</td>
+					<td class="td2">
+						<input type="text" name="productNation" value="">
+					</td>
+				</tr>
+				<tr>
+					<td class="td1" rowspan="3">생산회사 주소 <br/>및 전화번호</td>
+					<td class="td1">생산회사명</td>
+					<td class="td2" colspan="2">
+						<input type="text" name="productCompany" value="">
+					</td>
+				</tr>
+				<!--
+				<tr>
+					<td class="td1">지역명</td>
+					<td class="td2" colspan="2">
+						<select name="productLocal">
+						<option value="0">선택</option>
+													<option value="1" >서울</option>
+													<option value="2" >부산</option>
+													<option value="3" >대구</option>
+													<option value="4" >인천</option>
+													<option value="5" >대전</option>
+													<option value="6" >광주</option>
+													<option value="7" >울산</option>
+													<option value="8" >세종</option>
+													<option value="9" >제주</option>
+													<option value="10" >경기</option>
+													<option value="11" >강원</option>
+													<option value="12" >충북</option>
+													<option value="13" >충남</option>
+													<option value="14" >전북</option>
+													<option value="15" >전남</option>
+													<option value="16" >경북</option>
+													<option value="17" >경남</option>
+												</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">관할청</td>
+					<td class="td2" colspan="2">
+						<select name="productControl">
+						<option value="0">선택</option>
+													<option value="1" >한강유역환경청</option>
+													<option value="2" >대구지방환경청</option>
+													<option value="3" >금강유역환경청</option>
+													<option value="4" >원주유역환경청</option>
+													<option value="5" >낙동강유역환경청</option>
+													<option value="6" >영산강유역환경청</option>
+													<option value="7" >새만금지방환경청</option>
+												</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">대표자명</td>
+					<td class="td2" colspan="2">
+						<input type="text" name="productCeo" value="">
+					</td>
+				</tr>
+				-->
+				<tr>
+					<td class="td1">주소</td>
+					<td class="td2" colspan="2">
+						<input type="radio" name="productAddr"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="productAddr"  value="X" >&nbsp;X
+
+						<!--<input type="text" name="productAddr" value="">-->
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">전화번호</td>
+					<td class="td2" colspan="2">
+						<input type="radio" name="productTel"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="productTel"  value="X" >&nbsp;X
+
+						<!--<input type="text" name="productTel" value="">-->
+					</td>
+				</tr>
+
+
+				<tr>
+					<td class="td1" rowspan="3">수입회사 주소 <br/>및 전화번호</td>
+					<td class="td1">수입회사명</td>
+					<td class="td2" colspan="2">
+						<input type="text" name="importName" value="">
+					</td>
+				</tr>
+				<!--
+				<tr>
+					<td class="td1">지역</td>
+					<td class="td2" colspan="2">
+						<select name="importLocal">
+						<option value="0">선택</option>
+													<option value="1" >서울</option>
+													<option value="2" >부산</option>
+													<option value="3" >대구</option>
+													<option value="4" >인천</option>
+													<option value="5" >대전</option>
+													<option value="6" >광주</option>
+													<option value="7" >울산</option>
+													<option value="8" >세종</option>
+													<option value="9" >제주</option>
+													<option value="10" >경기</option>
+													<option value="11" >강원</option>
+													<option value="12" >충북</option>
+													<option value="13" >충남</option>
+													<option value="14" >전북</option>
+													<option value="15" >전남</option>
+													<option value="16" >경북</option>
+													<option value="17" >경남</option>
+												</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">관할청</td>
+					<td class="td2" colspan="2">
+						<select name="importControl">
+						<option value="0">선택</option>
+													<option value="1" >한강유역환경청</option>
+													<option value="2" >대구지방환경청</option>
+													<option value="3" >금강유역환경청</option>
+													<option value="4" >원주유역환경청</option>
+													<option value="5" >낙동강유역환경청</option>
+													<option value="6" >영산강유역환경청</option>
+													<option value="7" >새만금지방환경청</option>
+												</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">대표자명</td>
+					<td class="td2" colspan="2">
+						<input type="text" name="importCeo" value="">
+					</td>
+				</tr>
+				-->
+				<tr>
+					<td class="td1">주소</td>
+					<td class="td2" colspan="2">
+						<input type="radio" name="importAddr"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="importAddr"  value="X" >&nbsp;X
+
+						<!--<input type="text" name="importAddr" value="">-->
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">전화번호</td>
+					<td class="td2" colspan="2">
+						<input type="radio" name="importTel"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="importTel"  value="X" >&nbsp;X
+
+						<!--<input type="text" name="importTel" value="">-->
+					</td>
+				</tr>
+
+
+
+
+				<tr>
+					<td class="td1" rowspan="3">판매자 주소 <br/>및 전화번호</td>
+					<td class="td1">판매자명</td>
+					<td class="td2" colspan="2">
+						<input type="text" name="etcName" value="">
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">주소</td>
+					<td class="td2" colspan="2">
+						<input type="radio" name="etcAddr"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="etcAddr"  value="X" >&nbsp;X
+
+						<!--<input type="text" name="etcAddr" value="">-->
+					</td>
+				</tr>
+				<!--
+				<tr>
+					<td class="td1">지역</td>
+					<td class="td2" colspan="2">
+						<select name="etcLocal">
+						<option value="0">선택</option>
+													<option value="1" >서울</option>
+													<option value="2" >부산</option>
+													<option value="3" >대구</option>
+													<option value="4" >인천</option>
+													<option value="5" >대전</option>
+													<option value="6" >광주</option>
+													<option value="7" >울산</option>
+													<option value="8" >세종</option>
+													<option value="9" >제주</option>
+													<option value="10" >경기</option>
+													<option value="11" >강원</option>
+													<option value="12" >충북</option>
+													<option value="13" >충남</option>
+													<option value="14" >전북</option>
+													<option value="15" >전남</option>
+													<option value="16" >경북</option>
+													<option value="17" >경남</option>
+												</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">관할청</td>
+					<td class="td2" colspan="2">
+						<select name="etcControl">
+						<option value="0">선택</option>
+													<option value="1" >한강유역환경청</option>
+													<option value="2" >대구지방환경청</option>
+													<option value="3" >금강유역환경청</option>
+													<option value="4" >원주유역환경청</option>
+													<option value="5" >낙동강유역환경청</option>
+													<option value="6" >영산강유역환경청</option>
+													<option value="7" >새만금지방환경청</option>
+												</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">대표자명</td>
+					<td class="td2" colspan="2">
+						<input type="text" name="etcCeo" value="">
+					</td>
+				</tr>
+				-->
+
+				<tr>
+					<td class="td1">전화번호</td>
+					<td class="td2" colspan="2">
+						<input type="radio" name="etcTel"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="etcTel"  value="X" >&nbsp;X
+
+
+						<!--<input type="text" name="etcTel" value="">-->
+					</td>
+				</tr>
+
+
+
+
+
+				<tr>
+					<td class="td1">성분</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="ingredient_ca"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="ingredient_ca"  value="X" >&nbsp;X
+
+
+						
+						<!--
+						<input type="hidden" name="ingredient[]" value="999" >
+						<input type="text" name="ingredient_ca" value="">
+						-->
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">알러지유발향료</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="nn1_ca"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="nn1_ca"  value="X" >&nbsp;X
+
+
+						
+						<!--
+						<input type="hidden" name="ingredient[]" value="999" >
+						<input type="text" name="ingredient_ca" value="">
+						-->
+					</td>
+				</tr>
+
+				<tr class="productConn">
+					<td class="td1">중량/용량</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="capacity_ca"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="capacity_ca"  value="X" >&nbsp;X
+
+						
+						<!--
+						<input type="hidden" name="capacity" value="999" >
+						<input type="text" name="capacity_ca" value="">
+						-->
+					</td>
+				</tr>
+				<tr class="productConn">
+					<td class="td1">액성</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="liquid"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="liquid"  value="X" >&nbsp;X
+
+						<!--
+						<select name="liquid" onchange="liquidChn(this);">
+							<option value="0">선택</option>
+													<option value="1" >알칼리성(11pH 초과)</option>
+													<option value="2" >약알칼리성(8.0초과~11pH이하)</option>
+													<option value="3" >중성(6.0이상~8.0pH 이하)</option>
+													<option value="4" >약산성(3.0이상~6.0 미만)</option>
+													<option value="5" >산성(3.0 pH 미만)</option>
+												</select>
+						<br><br>
+						<input type="checkbox" name="liquid_chk" onclick="liquidCall(this);" value="999" >&nbsp;사유<input type="text" name="liquid_ca" style="width:80%;margin-left:10px;" disabled value="">
+						-->
+					</td>
+				</tr>
+				<tr class="productUsage">
+					<td class="td1">표준(권장)사용량</td>
+					<td class="td2" colspan="3">
+
+						<input type="radio" name="usage" onclick="usageCall(this);" value="1" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="usage" onclick="usageCall(this);" value="2" >&nbsp;X
+						<!--
+						<br><br>
+						<input type="radio" name="usage" onclick="usageCall(this);" value="999" >&nbsp;사유<input type="text" name="usage_ca" style="width:80%;margin-left:10px;" disabled value="">
+						-->
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">사용상주의사항</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="notandum" onclick="notandumCall(this);" value="1" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="notandum" onclick="notandumCall(this);" value="2" >&nbsp;X
+						<!--
+						<br><br>
+						<input type="radio" name="notandum" onclick="notandumCall(this);" value="999" >&nbsp;사유<input type="text" name="notandum_ca" style="width:80%;margin-left:10px;" disabled value="">
+						-->
+					</td>
+				</tr>
+				<tr class="productConn">
+					<td class="td1">응급처치사항</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="onlineEg" value="1" onclick="onlineEgCall(this);" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="onlineEg" value="2" onclick="onlineEgCall(this);" >&nbsp;X
+						<!--
+						<br><br>
+						<input type="radio" name="onlineEg" value="999" onclick="onlineEgCall(this);" >&nbsp;사유<input type="text" name="onlineEg_ca" style="width:80%;margin-left:10px;" disabled value="">
+						-->
+						<!--
+						<select name="liquid" onchange="liquidChn(this);">
+							<option value="0">선택</option>
+													<option value="1" >알칼리성(11pH 초과)</option>
+													<option value="2" >약알칼리성(8.0초과~11pH이하)</option>
+													<option value="3" >중성(6.0이상~8.0pH 이하)</option>
+													<option value="4" >약산성(3.0이상~6.0 미만)</option>
+													<option value="5" >산성(3.0 pH 미만)</option>
+												</select>
+						<br><br>
+						<input type="checkbox" name="liquid_chk" onclick="liquidCall(this);" value="999" >&nbsp;사유<input type="text" name="liquid_ca" style="width:80%;margin-left:10px;" disabled value="">
+						-->
+					</td>
+				</tr>
+			</table>
+
+
+			<!-- 3. 어린이보호포장 -->
+			<table class="tb_1 productChild" style="margin-top:30px;">
+				<tr>
+					<td class="td1">어린이 보호 포장</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="child" value="1" onclick="childCall(this);" checked>&nbsp;O&nbsp;&nbsp;<input type="radio" name="child" value="2" onclick="childCall(this);" >&nbsp;X
+						<!--
+						<br><br>
+						<input type="radio" name="child" value="999" onclick="childCall(this);" >&nbsp;사유<input type="text" name="child_ca" style="width:80%;margin-left:10px;" disabled value="">
+						-->
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">살균항균소독 문구</td>
+					<td class="td2" colspan="3">
+												<input type="hidden" name="onlineSt[]" value="999" >
+						<input type="text" name="onlineSt_ca" value="">
+					</td>
+				</tr>
+
+				<tr>
+					<td class="td1">친환경, 무균 문구</td>
+					<td class="td2" colspan="3">
+												<input type="hidden" name="onlineEco[]" value="999" >
+						<input type="text" name="onlineEco_ca" value="">
+					</td>
+				</tr>
+
+
+				<tr class="productConn">
+					<td class="td1">제품색상</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="ca_n01"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="ca_n01"  value="X" >&nbsp;X
+					</td>
+				</tr>
+				<tr class="productConn">
+					<td class="td1">물과의 혼합비율과 혼합비율에 따라 어는점을 나타내는 표 또는 그래프</td>
+					<td class="td2" colspan="3">
+						<input type="radio" name="ca_n02"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="ca_n02"  value="X" >&nbsp;X
+					</td>
+				</tr>
+
+			</table>
+
+
+
+			<!-- 자가검사번호 및 적합여부 -->
+			<br/><br/>
+			<b3>자가검사번호 및 적합여부</b3>
+			<table class="tb_1" style="">
+				<tr>
+					<td class="td1">조사제품 자가검사 번호</td>
+					<td class="td2">
+						<input type="text" name="serial1" value="">
+						<!--
+						<br><br>
+						<input type="checkbox" name="serial1_chk" value="999" onclick="serial1Call(this);" >&nbsp;사유<input type="text" name="serial1_ca" style="width:80%;margin-left:10px;" disabled value="">
+						-->
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">목록 자가검사번호</td>
+					<td class="td2"><input type="text" name="serial2" value=""></td>
+				</tr>
+				<tr>
+					<td class="td1">조사제품 KC번호</td>
+					<td class="td2">
+						<input type="radio" name="kc"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="kc"  value="X" >&nbsp;X
+						<!--<input type="text" name="kc" value="">-->
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">바코드</td>
+					<td class="td2">
+						<input type="radio" name="onlineBarcode"  value="O" checked>&nbsp;O&nbsp;&nbsp;
+						<input type="radio" name="onlineBarcode"  value="X" >&nbsp;X
+						<!--
+						<input type="text" name="onlineBarcode"  value="">
+						<br><br>
+						<input type="checkbox" name="onlineBarcode_chk" value="999" onclick="onlineBarcodeCall(this);" >&nbsp;사유<input type="text" name="onlineBarcode_ca" style="width:80%;margin-left:10px;" disabled value="">
+						-->
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">제품구분</td>
+					<td class="td2">
+						<input type="radio" name="onlineType" value="1" checked>&nbsp;기본&nbsp;&nbsp;<input type="radio" name="onlineType" value="2" >&nbsp;파생&nbsp;&nbsp;<input type="radio" name="onlineType" value="3" >&nbsp;파악불가
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">표시기준 적부 여부</td>
+					<td class="td2">
+						<input type="radio" name="legal" value="1" onclick="legalChk();" checked>&nbsp;적합&nbsp;&nbsp;<input type="radio" name="legal" value="2" onclick="legalChk();" >&nbsp;부적합&nbsp;&nbsp;<input type="radio" name="legal" value="3" onclick="legalChk();" >&nbsp;파악불가
+					</td>
+				</tr>
+				<tr>
+					<td class="td1">부적합 사유</td>
+					<td class="td2">
+													<p><input type="radio" name="legal_ca" onclick="legalChk2()" value="1" >&nbsp;1.회수대상제품</p>
+													<p><input type="radio" name="legal_ca" onclick="legalChk2()" value="2" >&nbsp;2.표시사항 부적합</p>
+													<p><input type="radio" name="legal_ca" onclick="legalChk2()" value="3" >&nbsp;3.자가검사 미확인</p>
+													<p><input type="radio" name="legal_ca" onclick="legalChk2()" value="4" >&nbsp;4.자가검사 부적합</p>
+													<p><input type="radio" name="legal_ca" onclick="legalChk2()" value="5" >&nbsp;5.유통확인된 산업용표시제품</p>
+													<p><input type="radio" name="legal_ca" onclick="legalChk2()" value="6" >&nbsp;6.자율이행개선권고 미개선</p>
+											</td>
+				</tr>
+
+				<tr>
+					<td class="td1">부적합사유 2번일 경우</td>
+					<td class="td2">
+													<p><input type="checkbox" name="legal_ca_2[]" value="1" >&nbsp;1.자가검사번호 단순미표기</p>
+													<p><input type="checkbox" name="legal_ca_2[]" value="2" >&nbsp;2.자가검사번호 오표기</p>
+													<p><input type="checkbox" name="legal_ca_2[]" value="3" >&nbsp;3.표시사항 미표기</p>
+													<p><input type="checkbox" name="legal_ca_2[]" value="4" >&nbsp;4.표시사항 오표기</p>
+											</td>
+				</tr>
+
+				<tr>
+					<td class="td1">부적합사유 3번일 경우</td>
+					<td class="td2">
+													<p><input type="radio" name="legal_ca_3" value="1" >&nbsp;1.자가검사 미실시</p>
+													<p><input type="radio" name="legal_ca_3" value="2" >&nbsp;2.자가검사번호 도용</p>
+											</td>
+				</tr>
+
+<!--
+				<tr>
+					<td class="td1">목록 자가검사기관</td>
+					<td class="td2">
+						<select name="serial2_ct">
+						<option value="0">선택</option>
+													<option value="1" >A-한국환경산업기술원</option>
+													<option value="2" >B-한국환경공단</option>
+													<option value="3" >C-한국건설생활환경시험연구원</option>
+													<option value="4" >D-한국기계전기전자시험연구원</option>
+													<option value="5" >E-한국의류시험연구원</option>
+													<option value="6" >F-한국화학융합시험연구원</option>
+													<option value="7" >G-FITI시험연구원</option>
+													<option value="8" >H-KOTITI시험연구원</option>
+												</select>
+					</td>
+				</tr>
+-->
+
+
+				<tr>
+					<td class="td1">조사제품 사진번호</td>
+					<td class="td2"><input type="text" name="picNum" value=""></td>
+				</tr>
+
+
+
+
+			</table>
+
+
+
+			<!-- 4. 기타 -->
+			<table class="tb_1" style="margin-top:30px;">
+
+
+
+
+				<tr>
+					<td class="td1" rowspan="7">온라인 유통시장 부분 최종 판매자 정보</td>
+					<td class="td1">URL(온라인)</td>
+					<td class="td2" colspan="2"><input type="text" name="url" value=""></td>
+				</tr>
+				<tr>
+					<td class="td1">판매자명</td>
+					<td class="td2" colspan="2"><input type="text" name="onlineName" value=""></td>
+				</tr>
+				<tr>
+					<td class="td1">대표자명</td>
+					<td class="td2" colspan="2"><input type="text" name="onlineCeo" value=""></td>
+				</tr>
+				<tr>
+					<td class="td1">연락처</td>
+					<td class="td2" colspan="2"><input type="text" name="onlineTel" value=""></td>
+				</tr>
+				<tr>
+					<td class="td1">주소</td>
+					<td class="td2" colspan="2"><input type="text" name="onlineAddr" value=""></td>
+				</tr>
+				<tr>
+					<td class="td1">E-mail</td>
+					<td class="td2" colspan="2"><input type="text" name="onlineEmail" value=""></td>
+				</tr>
+				<tr>
+					<td class="td1">비고</td>
+					<td class="td2" colspan="2"><input type="text" name="onlineEtc" value=""></td>
+				</tr>
+			</table>
+
+
+			<table class="tb_1" style="margin-top:30px;">
+				<tr>
+					<td class="td1" >메모</td>
+					<td class="td2" >
+						<textarea name="memo1" style="width:100%;height:100px;"></textarea>
+					</td>
+				</tr>
+			</table>
+
+
+			<table class="tb_4">
+				<tr>
+					<td class="td1">사진업로드</td>
+					<td class="td3">
+						<input type="button" class="btn4" value="사진추가" onclick="fileAdd('1');" style="cursor:pointer;">
+
+						<div class="fileBox1" style="margin-top:38px;">
+													</div>
+					</td>
+				</tr>
+			</table>
+
+			</form>
+
+			<div class="writeBtnBox" id="writeBtnBox01" >
+														<span class="btn_black" onclick="con_reg();return false;" style="right:140px;cursor:pointer;">계속등록</span>
+					<span class="btn_black" onclick="reg();return false;" style="right:80px;cursor:pointer;">등록</span>
+									<span class="btn_black" onclick="#" style="right:0px;cursor:pointer;">목록</span>
+															</div>
+
+			<div class="writeBtnBox" id="writeBtnBox02" style="display:none;">
+				<span class="btn_orange3" style="width:655px;text-align:center;cursor:pointer;">조사내용을 등록 중 입니다.</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+</div>
+	</div>
+	<iframe name="ifrm" id="ifrm" style="border:0px;visibility:hidden;width:0px;height:0px;"></iframe> 
+	<div style="height:50px;"></div>
+</body>
+</html>

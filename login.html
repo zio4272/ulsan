@@ -1,0 +1,159 @@
+
+<!doctype html>
+<html>
+	<head>
+		<title>2018 위해우려제품 모니터링</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="author" content="2018 위해우려제품 모니터링">
+		<meta name="description" content="울산녹색소비자연대 2018 위해우려제품 모니터링">
+		<meta name="keywords" content="울산 녹색 소비자연대 2018 위해우려제품 모니터링">
+		<link rel="stylesheet" href="/css/default.css">	 
+		<script src="/lib/jquery-1.7.2.min.js" ></script> 
+		<script src="/js/function.js" ></script> 
+	</head>
+	<body>
+	<div class="wrapper"><style>
+
+
+ 
+.login_top {border-top:5px solid #3E6EA5;}
+.wrapper {width:100%;height:100%;position:relative;text-align:center;overflow:hidden;}
+
+
+.login_wrap {position:relative; width:1063px; height:349px; background:url(../image/login_boxBg.gif) no-repeat; margin:0 auto; margin-top:150px;}
+.login_box {position:absolute; right:60px; width:570px; margin-top:70px;}
+.login_box input {outline:0;outline-style:none;outline-width:0;} 
+
+.login_title {padding-top:100px;margin:0px auto 0 auto;text-align:center;}
+
+.login_title1 {color: #FFF;font-size: 24px;font-family: "open_sansbold";}
+.login_title1 span {font-family: "open_sansregular";font-size: 18px;color: #9A9A9A;} 
+.login_title2 {font-family:"open_sansregular";font-size: 14px;color: #9A9A9A;}
+
+.login  {position:relative;height:50px;background: #444;border: none;color: #575757;border-radius:3px;}
+.login_password {margin-top:15px;}
+
+
+
+
+
+.login_img {width:50px;height:50px;float:left;}
+.login_img img {margin-top:13px;} 
+.login_line {position:absolute;background: #323232;height:35px;width:1px;left:49px;top:7px;}
+.input_box {float:left;width:380px;height:50px;font-family: "open_sansregular";font-size:14px;text-align:left;margin-left:5px;}
+.input_box label {position:absolute;width:370px;height:50px;line-height:50px;background:#444;color:white;cursor:pointer;padding-left:10px;}
+.input_box input {position:absolute;width:345px;height:20px;padding:0px 14px;margin-top:15px;border: none;font-family:"open_sansregular";font-size:14px;color:white;background:#444;}
+
+
+
+
+.login_input_box {float:left;}
+
+ 
+
+
+.login_btn {float:left;margin-left:15px;width:120px;height:115px;background:#3E6EA5;height:115px;line-height:115px;text-align:center;font-family:"open_sansregular";cursor:pointer;color:white;font-size:24px;} 
+.login_btn:hover{background:#628CBC;color:white;}
+
+
+.join_btn {width:570px;height:50px;background:#3E6EA5;line-height:50px;text-align:center;font-family:"MalgunGothic";cursor:pointer;color:white;font-size:16px;margin-top:50px;} 
+.join_btn:hover{background:#628CBC;}
+
+.browser_warning {width:400px;height:30px;line-height:30px;font-size:11px;font-family:"open_sansregular";position:absolute;top:0px;left:50%;margin-left:-200px;background:#F8FFAE;z-index:10;text-align:center;display:none;}
+
+.login_title2 {width:1063px; height:30px; text-align:left; color:black; margin:0px auto;  font-family:'MalgunGothic';font-weight:bold;}
+
+</style>
+<script> 
+$(document).ready(function(){
+	// 크롬 아닌 브라우저 활성화
+	/*
+	if( !(navigator.userAgent.toLowerCase().indexOf('chrome') > -1) )
+	{	
+		$(".browser_warning")
+			.fadeIn(500)
+			.delay(3000)
+			.queue(function(){		
+				$(this).dequeue();
+				$(".browser_warning").fadeOut(500);
+			});
+	}
+	*/
+
+
+
+
+});
+function enter_Check()
+{
+	// 엔터키의 코드는 13입니다.
+	if(event.keyCode == 13){
+		login();
+		return;
+	}
+}
+
+
+// 로그인
+function login()
+{	
+	if( $('input[name=id]').val()=='')
+	{
+		alert('아이디를 입력하세요.');
+		$('input[name=id]').focus();
+		return;
+	}
+
+	if( $('input[name=pw]').val()=='')
+	{
+		alert('비밀번호를 입력하세요.');
+		$('input[name=pw]').focus();
+		return;
+	}
+
+	$('form[name=loginFrm]').submit();
+
+} 
+
+
+</script>
+<!-- <div class="browser_warning">
+	이 페이지는 Chrome 브라우저에 최적화 되어있습니다.
+</div> -->
+<div class="wrapper">
+	<div class="login_top"></div>
+    <div class="login_wrap">
+    <div class="login_box">
+      <div class="login_input_box">
+        <form name="loginFrm" method="POST" action="./loginp.php" target="" > 
+          <input type="hidden" name="mode" value="login" />
+          <div class="login login_username">
+            <div class="login_img"><img src="/image/contacts_24.png" /></div>
+            <div class="input_box">
+              <input type="text" name="id" placeholder="ID" />
+            </div>
+            <div class="login_line"></div>
+            <div class="clear"></div>
+          </div>
+          <div class="login login_password">
+            <div class="login_img"><img src="/image/key_24.png" /></div>
+            <div class="input_box">
+              <input type="password" name="pw" placeholder="PASSWORD" onkeydown="enter_Check();" />
+            </div>
+            <div class="login_line"></div>
+            <div class="clear"></div>
+          </div>
+        </form>
+      </div>
+      <div class="login_btn" onclick="location.href='./index.html';">Login</div>
+      <div class="clear"></div>
+      <div class="join_btn" onclick="location.href='./signup.html';">회원가입</div>
+    </div>
+    </div>
+    <div class="clear"></div>
+</div>
+	</div>
+	<iframe name="ifrm" id="ifrm" style="border:0px;visibility:hidden;width:0px;height:0px;"></iframe> 
+	<div style="height:50px;"></div>
+</body>
+</html>

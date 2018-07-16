@@ -1,0 +1,261 @@
+
+<!doctype html>
+<html>
+	<head>
+		<title>2018 위해우려제품 모니터링</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="author" content="2018 위해우려제품 모니터링">
+		<meta name="description" content="울산녹색소비자연대 2018 위해우려제품 모니터링">
+		<meta name="keywords" content="울산 녹색 소비자연대 2018 위해우려제품 모니터링">
+		<link rel="stylesheet" href="/css/default.css">	 
+		<script src="/lib/jquery-1.7.2.min.js" ></script> 
+		<script src="/js/function.js" ></script> 
+	</head>
+	<body>
+	<div class="wrapper">
+<link rel="stylesheet" href="/css/jquery-ui.css">
+<link rel="stylesheet" href="/css/jquery-ui.theme.min.css">
+<script src="/lib/jquery-ui.min.js" ></script>
+<script src="/lib/jquery.ui.datepicker-ko.js" ></script>
+
+
+<script>
+$(document).ready(function(){
+	$("input[name=birth]").datepicker({
+		changeMonth: true, 
+		dateFormat: "yy-mm-dd", 
+		changeYear: true,
+		yearRange: 'c-99:c+0'
+	});
+
+	//$("input[name=email02]").val( $("select[name=email03] option:selected").val() );
+});
+
+
+// 아이디중복조회
+function idChk()
+{
+	var id = $("input[name=id]");
+	
+	if( id.val()=="")
+	{
+		alert("아이디를 입력하세요.");
+		id.focus();
+		return false;
+	}
+
+	$.ajax({
+		 url : "./idchk.php"
+		,type : "POST"
+		,data : {
+			id : id.val()
+		}
+		,cache : false
+		,async : false
+		,dataType : "JSON"
+		,success : function(data){			
+			if( data.data=="0" )
+			{
+				alert("해당 아이디를 사용할 수 있습니다.");
+				$("input[name=idchk]").val("1");
+			}
+			else
+			{
+				alert("해당 아이디를 사용할 수 없습니다.");
+				$("input[name=idchk]").val("0");
+				id.val("").focus();
+				return false;
+			}
+		}
+		,error : function(e){
+			// e.responseText
+		}
+	});
+}
+
+// 이메일 직접입력
+function mail_sel(elem)
+{
+	if( $(elem).val()=="")
+	{
+		$("input[name=email02]").attr("readonly", false).val('').focus();
+	}
+	else
+	{
+		$("input[name=email02]").attr("readonly", true).val( $(elem).val() );
+	} 
+}
+
+// 가입등록
+function join()
+{
+	var id = $("input[name=id]"),
+		password = $("input[name=password]"),
+		password_chk = $("input[name=password_chk]"),
+		name = $("input[name=name]"),
+		birth = $("input[name=birth]"),
+		email01 = $("input[name=email01]"),
+		email02 = $("input[name=email02]"),
+		phone01 = $("input[name=phone01]"),
+		phone02 = $("input[name=phone02]"),
+		phone03 = $("input[name=phone03]");
+
+	var idchk = $("input[name=idchk]");
+
+	if( id.val()=="")
+	{
+		alert("아이디를 입력하세요.");
+		id.focus();
+		return false;
+	}
+	if( idchk.val()=="0" )
+	{
+		alert("아이디 중복확인 하세요.");
+		return false;
+	}
+	if( password.val()=="")
+	{
+		alert("비밀번호를 입력하세요.");
+		password.focus();
+		return false;
+	}
+	if( password_chk.val()=="")
+	{
+		alert("비밀번호 확인를 입력하세요.");
+		password_chk.focus();
+		return false;
+	}
+	if( password.val()!=password_chk.val() )
+	{
+		alert("비밀번호가 일치하지 않습니다.");
+		password_chk.focus();
+		return false;
+	}
+	if( name.val()=="")
+	{
+		alert("이름을 입력하세요.");
+		name.focus();
+		return false;
+	}
+	if( birth.val()=="")
+	{
+		alert("생년월일을 입력하세요.");
+		birth.focus();
+		return false;
+	}
+	if( email01.val()=="")
+	{
+		alert("이메일을 입력하세요.");
+		email01.focus();
+		return false;
+	}
+	if( email02.val()=="")
+	{
+		alert("이메일을 선택하세요.");
+		email02.focus();
+		return false;
+	}
+	if( phone02.val()=="")
+	{
+		alert("휴대번호를 입력하세요.");
+		phone02.focus();
+		return false;
+	}
+	if( phone03.val()=="")
+	{
+		alert("휴대번호를 입력하세요.");
+		phone03.focus();
+		return false;
+	}
+
+	$("#writeBtnBox01").hide();
+	$("#writeBtnBox02").show();
+
+	$("form[name=joinFrm]")
+		.attr("action", "./joinp.php")
+		.submit();
+}
+</script>
+<div class="content" style="margin:0 auto;clear:both;float:none;"> 
+
+	<form name="joinFrm" target="ifrm" method="POST">
+	<input type="hidden" name="idchk" value="0">
+	<table class="join_form">
+		<tbody>	
+		<tr>
+			<th>아이디</th>
+			<td>						
+				<input name="id" type="text" style="ime-mode:disabled;margin-right:5px;">
+				<input type="button" value="중복확인" class="btn_line_w150" onclick="idChk();">
+			</td>
+		</tr>	
+		<tr>
+			<th>비밀번호</th>
+			<td>
+				<input name="password" type="password" >
+			</td>
+		</tr>
+		<tr>
+			<th>비밀번호 확인</th>
+			<td><input name="password_chk" type="password" ></td>
+		</tr>
+		<tr>
+			<th>이름</th>
+			<td><input name="name" type="text" ></td>
+		</tr>
+		<tr>
+			<th>생년월일</th>
+			<td><input name="birth" type="text" readonly> 
+		</tr>
+		<tr>
+			<th>이메일</th>
+			<td>
+				<input name="email01" type="text" >
+				<span>@</span>
+				<input name="email02" type="text" style="margin-right:5px;" >
+				<select name="email03" onchange="mail_sel(this);">
+					<option value="" selected>직접입력</option>
+					<option value="naver.com" >naver.com</option>
+					<option value="daum.net">daum.net</option>
+					<option value="gmail.com">gmail.com</option>
+					<option value="hanmail.net">hanmail.net</option>
+					<option value="nate.com">nate.com</option>
+					
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>휴대번호</th>
+			<td>
+				<select name="phone01">
+					<option value="010">010</option>
+					<option value="011">011</option>
+					<option value="016">016</option>
+					<option value="017">017</option>
+					<option value="018">018</option>
+					<option value="019">019</option>
+				</select>
+				<span>-</span>
+				<input name="phone02" type="text" onkeypress="onlyNumber(event);" onkeydown="removeChar(event);" onblur="removeChar(event);" maxlength="4">
+				<span>-</span>
+				<input name="phone03" type="text" onkeypress="onlyNumber(event);" onkeydown="removeChar(event);" onblur="removeChar(event);" maxlength="4">
+			</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<div class="writeBtnBox" id="writeBtnBox01" style="width:100%;margin:30px 0px;" >
+		<span class="btn_black" onclick="join();return false;" style="right:0px;cursor:pointer;">가입</span>
+	</div> 
+
+	<div class="writeBtnBox" id="writeBtnBox02" style="width:100%;margin:30px 0px;display:none;" >
+		<span class="btn_orange3" style="width:380px;text-align:center;cursor:pointer;left:50%;margin-left:-190px;">가입 등록 중 입니다.</span> 
+	</div>	
+</div>
+
+<div class="clear"></div>
+	</div>
+	<iframe name="ifrm" id="ifrm" style="border:0px;visibility:hidden;width:0px;height:0px;"></iframe> 
+	<div style="height:50px;"></div>
+</body>
+</html>
